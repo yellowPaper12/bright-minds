@@ -109,5 +109,3 @@ Open `js/data.js` and add to any world's `questions` array:
 MIT — free to use, adapt, and share for educational purposes.
 
 ---
-
-*Made with ❤️ for children with Down syndrome and their families.*
