@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bright Minds – Learning for Every Age</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+<div id="app">
+  <div id="confetti-container"></div>
+
+  <!-- ══════════════════════════════
+       AGE PICKER SCREEN
+  ══════════════════════════════ -->
+  <div id="screen-age" class="screen active">
+    <div class="age-hero">
+      <div class="brain-icon">🧠</div>
+      <h1 class="app-title">Bright Minds</h1>
+      <p class="app-tagline">Smart learning that grows with you!</p>
+    </div>
+    <p class="age-prompt">How old are you?</p>
+    <div class="age-grid">
+      <button class="age-card" onclick="pickAge(1)" data-range="4-5">
+        <span class="age-emoji">🌱</span>
+        <span class="age-label">4 – 5</span>
+        <span class="age-desc">Little Explorer</span>
+      </button>
+      <button class="age-card" onclick="pickAge(2)" data-range="6-7">
+        <span class="age-emoji">🚀</span>
+        <span class="age-label">6 – 7</span>
+        <span class="age-desc">Rising Star</span>
+      </button>
+      <button class="age-card" onclick="pickAge(3)" data-range="8-10">
+        <span class="age-emoji">⚡</span>
+        <span class="age-label">8 – 10</span>
+        <span class="age-desc">Super Thinker</span>
+      </button>
+    </div>
+    <p class="age-footer">Made with ❤️ for children with Down syndrome and their families</p>
+  </div>
+
+  <!-- ══════════════════════════════
+       HOME SCREEN (worlds)
+  ══════════════════════════════ -->
+  <div id="screen-home" class="screen">
+    <header class="home-header">
+      <button class="change-age-btn" onclick="goAge()" id="age-badge"></button>
+      <div class="home-titles">
+        <h2 class="home-greeting" id="home-greeting"></h2>
+        <p class="home-sub" id="home-sub"></p>
+      </div>
+      <button class="mode-toggle" id="mode-toggle-btn" onclick="toggleMode()"></button>
+    </header>
+
+    <div id="guide-mode-banner" class="guide-banner" style="display:none">
+      👩‍🏫 Guide Mode is ON — tips will appear for every question
+    </div>
+
+    <p class="worlds-label">Choose a world to explore:</p>
+    <div class="worlds-grid" id="worlds-grid"></div>
+
+    <footer class="home-footer">Made with ❤️ for children with Down syndrome and their families</footer>
+  </div>
+
+  <!-- ══════════════════════════════
+       GAME SCREEN
+  ══════════════════════════════ -->
+  <div id="screen-game" class="screen">
+    <div class="game-topbar">
+      <button class="back-btn" onclick="goHome()">←</button>
+      <div class="game-title-wrap">
+        <span id="game-world-title"></span>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-track">
+          <div id="progress-fill" class="progress-fill"></div>
+        </div>
+        <span id="q-counter" class="q-counter"></span>
+      </div>
+    </div>
+
+    <div class="score-bar">
+      <span id="score-display">⭐ 0</span>
+      <span id="streak-display"></span>
+    </div>
+
+    <div id="guide-tip-box" class="guide-tip"></div>
+
+    <div class="question-card" id="question-card">
+      <div id="q-icon" class="q-icon"></div>
+      <div id="q-text" class="q-text"></div>
+      <div id="q-sub"  class="q-sub"></div>
+    </div>
+
+    <div id="choices" class="choices-grid" role="group" aria-label="Answer choices"></div>
+    <div id="feedback-bar" class="feedback-bar" aria-live="polite"></div>
+  </div>
+
+  <!-- ══════════════════════════════
+       RESULT SCREEN
+  ══════════════════════════════ -->
+  <div id="screen-result" class="screen result-screen">
+    <div id="result-icon"   class="result-icon"></div>
+    <div id="result-msg"    class="result-msg"></div>
+    <div id="result-sub"    class="result-sub"></div>
+    <div id="result-stars"  class="result-stars"></div>
+    <div id="result-detail" class="result-detail"></div>
+    <div class="result-btns">
+      <button class="big-btn btn-primary" onclick="replayWorld()">Play Again 🎉</button>
+      <button class="big-btn btn-secondary" onclick="goHome()">Home 🏠</button>
+    </div>
+  </div>
+
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
