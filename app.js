@@ -1,6 +1,56 @@
 // ════════════════════════════════════════════
-//  BRIGHT MINDS — App Logic
+//  BRIGHT MINDS — App Logic (v2)
 // ════════════════════════════════════════════
+
+// ── Sound System (Web Audio API — no files needed) ──────
+let audioCtx = null;
+
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+
+function playTone(frequency, duration, type = 'sine', gainVal = 0.4, delay = 0) {
+  try {
+    const ctx = getAudioCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.type = type;
+    osc.frequency.setValueAtTime(frequency, ctx.currentTime + delay);
+    gain.gain.setValueAtTime(gainVal, ctx.currentTime + delay);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + delay + duration);
+    osc.start(ctx.currentTime + delay);
+    osc.stop(ctx.currentTime + delay + duration + 0.05);
+  } catch(e) {}
+}
+
+// 🎉 Correct answer — cheerful rising jingle (3 notes)
+function playCorrectSound() {
+  playTone(523, 0.12, 'triangle', 0.45, 0.00);  // C5
+  playTone(659, 0.12, 'triangle', 0.45, 0.13);  // E5
+  playTone(784, 0.25, 'triangle', 0.45, 0.26);  // G5
+  // add a shimmer overtone
+  playTone(1046, 0.18, 'sine', 0.15, 0.26);      // C6
+}
+
+// 💪 Wrong answer — soft low "try again" boop (gentle, not harsh)
+function playWrongSound() {
+  playTone(330, 0.10, 'sine', 0.30, 0.00);  // E4
+  playTone(294, 0.20, 'sine', 0.25, 0.12);  // D4
+}
+
+// 🏆 Result fanfare — triumphant 5-note chord arpeggio
+function playResultSound(perfect) {
+  if (perfect) {
+    [523, 659, 784, 1046, 1318].forEach((f, i) => playTone(f, 0.3, 'triangle', 0.35, i * 0.1));
+  } else {
+    playTone(523, 0.15, 'triangle', 0.35, 0.0);
+    playTone(659, 0.20, 'triangle', 0.30, 0.15);
+    playTone(784, 0.25, 'triangle', 0.30, 0.30);
+  }
+}
 
 let currentTier    = null;
 let currentWorld   = null;
@@ -212,6 +262,7 @@ function handleAnswer(chosen, btn, q) {
   if (correct) {
     score++;
     streak++;
+    playCorrectSound();
     document.getElementById('score-display').textContent = '⭐ ' + score;
     const streakEl = document.getElementById('streak-display');
     streakEl.textContent = streak >= 3 ? '🔥 ' + streak + ' streak!' : '';
@@ -220,6 +271,7 @@ function handleAnswer(chosen, btn, q) {
     confetti();
   } else {
     streak = 0;
+    playWrongSound();
     document.getElementById('streak-display').textContent = '';
     fb.textContent = '💪 Good try! The right answer is highlighted.';
     fb.className   = 'feedback-bar wrong-fb';
@@ -276,6 +328,7 @@ function showResult() {
     'Your best in this world: ' + best + ' / ' + total;
 
   showScreen('result');
+  playResultSound(pct === 1);
   setTimeout(confetti, 150);
 }
 
